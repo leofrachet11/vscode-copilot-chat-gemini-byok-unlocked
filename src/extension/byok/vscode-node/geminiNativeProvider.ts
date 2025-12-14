@@ -41,15 +41,27 @@ export class GeminiNativeBYOKLMProvider implements BYOKModelProvider<LanguageMod
 			const modelList: Record<string, BYOKModelCapabilities> = {};
 
 			for await (const model of models) {
-				const modelId = model.name;
-				if (!modelId) {
-					continue; // Skip models without names
+				const modelId = model.name?.split('/').pop();
+
+				if (!modelId ||
+					!model.displayName ||
+					model.inputTokenLimit === undefined ||
+					model.outputTokenLimit === undefined) {
+					continue;
 				}
 
-				// Enable only known models.
-				if (this._knownModels && this._knownModels[modelId]) {
-					modelList[modelId] = this._knownModels[modelId];
+				if (!model.supportedActions?.includes('generateContent')) {
+					continue; // Only include models that support text generation
 				}
+
+				// Add the model with capabilities based on the API response
+				modelList[modelId] = {
+					name: model.displayName,
+					vision: true,
+					toolCalling: true,
+					maxInputTokens: model.inputTokenLimit,
+					maxOutputTokens: model.outputTokenLimit
+				};
 			}
 			return modelList;
 		} catch (error) {
