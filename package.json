@@ -1,7 +1,7 @@
 {
 	"name": "copilot-chat",
-	"displayName": "GitHub Copilot Chat",
-	"description": "AI chat features powered by Copilot",
+	"displayName": "GitHub Copilot Chat - Gemini BYOK Unlocked",
+	"description": "AI chat features powered by Copilot with all Gemini text models available to be used with BYOK",
 	"version": "0.33.5",
 	"build": "1",
 	"internalAIKey": "1058ec22-3c95-4951-8443-f26c1f325911",
